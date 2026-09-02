@@ -1,6 +1,4 @@
-def main():
-    print("Hello from bingo-shop!")
+import uvicorn
 
-
-if __name__ == "__main__":
-    main()
+if __name__=="__main__":
+    uvicorn.run("app.main:app",reload=True)
