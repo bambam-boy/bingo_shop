@@ -3,13 +3,11 @@ from logging.config import fileConfig
 
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
-from sqlalchemy.ext.asyncio import async_engine_from_config
+from sqlalchemy.ext.asyncio import create_async_engine
 
 from alembic import context
-
-from app.db.base_class import Base
+from app.db.base import Base
 from app.core.config import settings
-
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -30,9 +28,6 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-def get_url()->str:
-    return settings.SQLALCHEMY_DATABASE_URI_ASYNC.encoded_string()
-
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
@@ -46,9 +41,9 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = get_url()
+
     context.configure(
-        url=url,
+        url=settings.SQLALCHEMY_DATABASE_URI_ASYNC,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -71,10 +66,9 @@ async def run_async_migrations() -> None:
 
     """
 
-    connectable = async_engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
+    connectable = create_async_engine(
+        settings.SQLALCHEMY_DATABASE_URI_ASYNC,
+        poolclass=pool.NullPool
     )
 
     async with connectable.connect() as connection:

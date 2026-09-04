@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     PORJECT_VERSION:str="0.1.0"
     API_URL:str="/api/v1"
 
-    SQLALCHEMY_DATABASE_URI:Optional[PostgresDsn]=None
+    SQLALCHEMY_DATABASE_URI:Optional[str]=""
 
     @field_validator("SQLALCHEMY_DATABASE_URI",mode="before")
     @classmethod
@@ -28,11 +28,11 @@ class Settings(BaseSettings):
             host=datas.get("POSTGRES_HOST"),
             port=int(datas.get("POSTGRES_PORT")),
             path=datas.get("POSTGRES_DB")
-        )
+        ).encoded_string()
 
         return url
 
-    SQLALCHEMY_DATABASE_URI_ASYNC:Optional[PostgresDsn]=None
+    SQLALCHEMY_DATABASE_URI_ASYNC:Optional[str]=""
 
     @field_validator("SQLALCHEMY_DATABASE_URI_ASYNC",mode="before")
     @classmethod
@@ -47,7 +47,7 @@ class Settings(BaseSettings):
             host=datas.get("POSTGRES_HOST"),
             port=int(datas.get("POSTGRES_PORT")),
             path=datas.get("POSTGRES_DB")
-        )
+        ).encoded_string()
 
         return url    
 
