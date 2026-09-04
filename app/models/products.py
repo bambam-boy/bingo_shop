@@ -1,14 +1,15 @@
-import uuid
+from uuid import UUID,uuid4
 
-from sqlalchemy import Column,Integer,String
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import Mapped,mapped_column,relationship
+from sqlalchemy.dialects.postgresql import UUID as DB_UUID
 from app.db.base_class import Base
-# TODO add realation for product images and users 
-
+from sqlalchemy import ForeignKey
 
 class Products(Base):
-    id=Column(UUID(as_uuid=True),primary_key=True,default=uuid.uuid4)
-    name=Column(String,nullable=False)
-    count=Column(Integer,nullable=False)
-    price=Column(Integer,nullable=False)
+    id:Mapped[UUID]=mapped_column(DB_UUID(as_uuid=True),primary_key=True,default=uuid4)
+    name:Mapped[str]=mapped_column(nullable=False)
+    count:Mapped[int]=mapped_column(nullable=False)
+    price:Mapped[int]=mapped_column(nullable=False)
+    user_id:Mapped[int]=mapped_column(ForeignKey("users.id"))
+    user:Mapped["Users"]=relationship(back_populates="products")
     

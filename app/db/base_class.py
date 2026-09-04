@@ -1,4 +1,5 @@
-from sqlalchemy import Column,DateTime
+from sqlalchemy import DateTime
+from sqlalchemy.orm import Mapped,mapped_column
 from typing import Any
 from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
@@ -13,5 +14,5 @@ class Base(DeclarativeBase):
     def __tablename__(cls)->str:
         return cls.__name__.lower()
 
-    created_at=Column(DateTime,default=datetime.utcnow)
-    modefide_at=Column(DateTime,default=datetime.utcnow,onupdate=datetime.utcnow)
+    created_at:Mapped[datetime]=mapped_column(DateTime,nullable=False,default=datetime.utcnow)
+    modefide_at:Mapped[datetime]=mapped_column(DateTime,nullable=False,default=datetime.utcnow,onupdate=datetime.utcnow)

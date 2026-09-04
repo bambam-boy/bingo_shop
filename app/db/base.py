@@ -1,2 +1,3 @@
 from app.db.base_class import Base
 from app.models.products import Products
+from app.models.users import Users
