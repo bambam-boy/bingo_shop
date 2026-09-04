@@ -10,7 +10,7 @@ class Base(DeclarativeBase):
 
 
     @declared_attr
-    def __tablename(cls)->str:
+    def __tablename__(cls)->str:
         return cls.__name__.lower()
 
     created_at=Column(DateTime,default=datetime.utcnow)
